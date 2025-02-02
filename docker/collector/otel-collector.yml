@@ -1,0 +1,31 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:  # OTLP gRPC (port 4317)
+        endpoint: 0.0.0.0:4317  # MUST HAVE
+      http:  # OTLP HTTP (port 4318)
+        endpoint: 0.0.0.0:4318  # TODO MUST HAVE
+        cors:
+          allowed_origins: [ "*" ]
+          allowed_headers: [ "*" ]
+
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: tempo:4317  # tempo container host and port
+    tls:
+      insecure: true
+
+service:
+  telemetry:
+    logs:
+      level: info
+      encoding: console
+      development: false
+  pipelines:
+    traces:
+        receivers: [ otlp ]
+        processors: [ batch ]
+        exporters: [ otlp ]  # name here should match the exporter name for tempo which is otlp
