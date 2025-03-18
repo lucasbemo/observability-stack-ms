@@ -1,3 +1,9 @@
+extensions:
+  oidc:
+    issuer_url: http://identity:8080/realms/opentelemetry
+    audience: account
+    attribute: Authorization
+
 receivers:
   otlp:
     protocols:
@@ -5,6 +11,8 @@ receivers:
         endpoint: 0.0.0.0:4317  # MUST HAVE
       http:  # OTLP HTTP (port 4318)
         endpoint: 0.0.0.0:4318  # TODO MUST HAVE
+        auth:
+          authenticator: oidc
         cors:
           allowed_origins: [ "*" ]
           allowed_headers: [ "*" ]
@@ -24,6 +32,7 @@ service:
       level: info
       encoding: console
       development: false
+  extensions: [oidc]
   pipelines:
     traces:
         receivers: [ otlp ]
