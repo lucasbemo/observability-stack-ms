@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-public class DemoController {
+public class BackendTracingController {
 	
-	private Logger logger = LoggerFactory.getLogger(DemoController.class);
+	private final Logger logger = LoggerFactory.getLogger(BackendTracingController.class);
 
 	@GetMapping("/api/outgoing-http-call")
 	public String outGoingCall() {
